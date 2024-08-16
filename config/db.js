@@ -1,15 +1,18 @@
-import mongoose from "mongoose";
-import dotenv from 'dotenv'
-
-dotenv.config()
+// db.js
+import mongoose from 'mongoose';
+import { dbUri } from './config.js';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URL)
-        console.log("mongodb başarıyla kontak kuruldu");
+        await mongoose.connect(dbUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log('MongoDB başarıyla bağlantı kuruldu.');
     } catch (error) {
-        console.log("mongodb kontak kurma başarısız  ", error.message);
-        throw error;
+        console.error('MongoDB bağlantısı sırasında hata:', error.message);
+        process.exit(1);
     }
 }
-export default connectDB
+
+export default connectDB;

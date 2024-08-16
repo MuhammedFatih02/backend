@@ -1,5 +1,6 @@
-import express from "express";
-import connectDB from "./config/db.js";
+// index.js
+import express from 'express';
+import connectDB from './db.js';
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoute.js';
 import adminProductsRoutes from './routes/adminProductsRoutes.js';
@@ -14,13 +15,10 @@ import contactRoutes from './routes/contactRoutes.js';
 import cors from 'cors';
 import logger from './utils/logger.js';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import helmet from 'helmet'; // Helmet'ı ekleyin
 
 const app = express();
 const port = 3000;
-
-dotenv.config();
 
 // Güvenlik başlıkları için Helmet'ı kullanın
 app.use(helmet());
@@ -34,7 +32,7 @@ const corsOptions = {
     'http://localhost:5173',
     'http://localhost:3000',
     'https://41b3aebbe066ec0062db927a0b8f7d0f.serveo.net',
-    'https://61f409135b531c9ea157e39b42d8d9b0.serveo.net'//frontend
+    'https://61f409135b531c9ea157e39b42d8d9b0.serveo.net' // frontend
   ],
   credentials: true,
 };
@@ -74,13 +72,13 @@ app.use('/api/contacts', contactRoutes);
 const startServer = async () => {
   try {
     await connectDB();
-    console.log("MongoDB başarıyla bağlandı");
+    console.log('MongoDB başarıyla bağlandı');
 
     app.listen(port, () => {
       console.log(`Sunucu ${port} üzerinden çalışıyor`);
     });
   } catch (error) {
-    console.error("Sunucu başlatılamadı", error);
+    console.error('Sunucu başlatılamadı', error);
     process.exit(1);
   }
 };
