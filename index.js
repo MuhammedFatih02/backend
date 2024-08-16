@@ -29,8 +29,8 @@ app.disable('x-powered-by');
 // CORS ayarlarını güncelle
 const corsOptions = {
   origin: [
-    'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app/',
-    'https://backend-1jjd.onrender.com/',
+    'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app',
+    'https://backend-1jjd.onrender.com',
   ],
   credentials: true,
 };
