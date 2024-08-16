@@ -1,6 +1,6 @@
 // index.js
 import express from 'express';
-import connectDB from './db.js';
+import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoute.js';
 import adminProductsRoutes from './routes/adminProductsRoutes.js';
