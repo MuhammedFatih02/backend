@@ -29,10 +29,8 @@ app.disable('x-powered-by');
 // CORS ayarlarını güncelle
 const corsOptions = {
   origin: [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://41b3aebbe066ec0062db927a0b8f7d0f.serveo.net',
-    'https://61f409135b531c9ea157e39b42d8d9b0.serveo.net' // frontend
+    'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app/',
+    'https://backend-1jjd.onrender.com/',
   ],
   credentials: true,
 };

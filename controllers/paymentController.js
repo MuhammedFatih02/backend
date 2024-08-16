@@ -12,8 +12,8 @@ const apiPassword = "api123";
 const merchantId = "496";
 const customerId = "400235";
 const userName = "apitest";
-const okUrl = 'http://localhost:3000/api/payments/approval';
-const failUrl = 'http://localhost:3000/api/payments/fail';
+const okUrl = 'https://backend-1jjd.onrender.com/api/payments/approval';
+const failUrl = 'https://backend-1jjd.onrender.com/api/payments/fail';
 
 const getCardType = (cardNumber) => {
     if (/^4/.test(cardNumber)) {
