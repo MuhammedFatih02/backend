@@ -28,10 +28,24 @@ app.disable('x-powered-by');
 
 // CORS ayarlarını güncelle
 const corsOptions = {
-  origin: [
-    'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app',
-    'https://backend-1jjd.onrender.com',
-  ],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'https://frontend-theta-gules.vercel.app',
+      'https://frontend-git-main-fatihs-projects-4bf1d5d4.vercel.app',
+      'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app',
+      /^https:\/\/frontend-.*\.vercel\.app$/  // Gelecekteki Vercel deploymentları için
+    ];
+    
+    if (!origin || allowedOrigins.some(allowedOrigin => 
+      allowedOrigin instanceof RegExp 
+        ? allowedOrigin.test(origin) 
+        : allowedOrigin === origin
+    )) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy violation'));
+    }
+  },
   credentials: true,
 };
 
