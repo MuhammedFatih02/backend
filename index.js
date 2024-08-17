@@ -1,4 +1,3 @@
-// index.js
 import express from 'express';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
@@ -15,10 +14,10 @@ import contactRoutes from './routes/contactRoutes.js';
 import cors from 'cors';
 import logger from './utils/logger.js';
 import bodyParser from 'body-parser';
-import helmet from 'helmet'; // Helmet'ı ekleyin
+import helmet from 'helmet';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Güvenlik başlıkları için Helmet'ı kullanın
 app.use(helmet());
@@ -26,16 +25,17 @@ app.use(helmet());
 // X-Powered-By başlığını kaldırın
 app.disable('x-powered-by');
 
-// CORS ayarlarını güncelle
+// İzin verilen originler
+const allowedOrigins = [
+  'https://frontend-theta-gules.vercel.app',
+  'https://frontend-git-main-fatihs-projects-4bf1d5d4.vercel.app',
+  'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app',
+  /^https:\/\/frontend-.*\.vercel\.app$/  // Gelecekteki Vercel deploymentları için
+];
+
+// CORS ayarları
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      'https://frontend-theta-gules.vercel.app',
-      'https://frontend-git-main-fatihs-projects-4bf1d5d4.vercel.app',
-      'https://frontend-eiq5j2s04-fatihs-projects-4bf1d5d4.vercel.app',
-      /^https:\/\/frontend-.*\.vercel\.app$/  // Gelecekteki Vercel deploymentları için
-    ];
-    
     if (!origin || allowedOrigins.some(allowedOrigin => 
       allowedOrigin instanceof RegExp 
         ? allowedOrigin.test(origin) 
@@ -54,14 +54,14 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// CSP ayarları (geliştirme için geniş, canlıya alırken sıkılaştırın)
+// CSP ayarları
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
     styleSrc: ["'self'", "'unsafe-inline'"],
     imgSrc: ["'self'", "data:", "blob:"],
-    connectSrc: ["'self'", ...corsOptions.origin],
+    connectSrc: ["'self'", ...allowedOrigins.filter(origin => typeof origin === 'string')],
   },
 }));
 
@@ -69,6 +69,7 @@ app.get('/', (req, res) => {
   res.send('Merhaba Dünya');
 });
 
+// Routes
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', userRoutes);
@@ -85,7 +86,6 @@ const startServer = async () => {
   try {
     await connectDB();
     console.log('MongoDB başarıyla bağlandı');
-
     app.listen(port, () => {
       console.log(`Sunucu ${port} üzerinden çalışıyor`);
     });
