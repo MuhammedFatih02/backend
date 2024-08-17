@@ -47,9 +47,12 @@ const corsOptions = {
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,10 +68,6 @@ app.use(helmet.contentSecurityPolicy({
   },
 }));
 
-app.get('/', (req, res) => {
-  res.send('Merhaba Dünya');
-});
-
 // Routes
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
@@ -81,6 +80,10 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/contacts', contactRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Merhaba Dünya');
+});
 
 const startServer = async () => {
   try {
