@@ -17,7 +17,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || '0';
 
 // Güvenlik başlıkları için Helmet'ı kullanın
 app.use(helmet());
@@ -52,7 +52,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -89,9 +88,31 @@ const startServer = async () => {
   try {
     await connectDB();
     console.log('MongoDB başarıyla bağlandı');
-    app.listen(port, () => {
-      console.log(`Sunucu ${port} üzerinden çalışıyor`);
+    
+    const server = app.listen(port, () => {
+      const actualPort = server.address().port;
+      console.log(`Sunucu ${actualPort} üzerinden çalışıyor`);
     });
+
+    server.on('error', (error) => {
+      if (error.syscall !== 'listen') {
+        throw error;
+      }
+
+      switch (error.code) {
+        case 'EACCES':
+          console.error(`Port ${port} yetki gerektiriyor`);
+          process.exit(1);
+          break;
+        case 'EADDRINUSE':
+          console.error(`Port ${port} zaten kullanımda`);
+          process.exit(1);
+          break;
+        default:
+          throw error;
+      }
+    });
+
   } catch (error) {
     console.error('Sunucu başlatılamadı', error);
     process.exit(1);
